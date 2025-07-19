@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔴 PRANK MODE ACTIVATED! 🔴</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ff0000;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            animation: flash 0.3s infinite;
+        }
+        @keyframes flash {
+            0% { background-color: #ff0000; }
+            50% { background-color: #00ff00; }
+            100% { background-color: #0000ff; }
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-top: 20vh;
+            text-shadow: 3px 3px 0 #000;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            margin: 10px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 50px;
+            color: black;
+            font-weight: bold;
+        }
+        #countdown {
+            font-size: 1.8em;
+            margin: 20px;
+        }
+        .exit-trap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .trap-content {
+            background: #ff0000;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤪 GOTCHA! 🤪</h1>
+    <p>Your phone is now stuck in prank mode!</p>
+    <div id="countdown">Auto-freeze in: 2:00</div>
+    
+    <button onclick="fakeClose()">Exit Now</button>
+    <button onclick="runAway(this)">Close Me!</button>
+
+    <div class="exit-trap" id="exitTrap">
+        <div class="trap-content">
+            <h2>NICE TRY! 😈</h2>
+            <p>You need to wait for the timer!</p>
+            <button onclick="hideTrap()">FINE...</button>
+        </div>
+    </div>
+
+    <audio autoplay loop>
+        <source src="https://www.soundjay.com/buttons/sounds/button-09.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ===== TRAP TECHNIQUES ===== //
+        
+        // 1. History manipulation (makes back button require multiple presses)
+        history.pushState(null, null, location.href);
+        window.onpopstate = function() {
+            history.go(1);
+            vibratePhone();
+            showTrap();
+        };
+
+        // 2. Fake close buttons
+        function fakeClose() {
+            vibratePhone();
+            showTrap();
+        }
+        
+        // 3. Runaway button
+        function runAway(btn) {
+            btn.style.position = 'absolute';
+            btn.style.left = Math.random() * 70 + 'vw';
+            btn.style.top = Math.random() * 70 + 'vh';
+            vibratePhone();
+        }
+
+        // 4. Show/hide trap
+        function showTrap() {
+            document.getElementById('exitTrap').style.display = 'flex';
+        }
+        function hideTrap() {
+            document.getElementById('exitTrap').style.display = 'none';
+        }
+
+        // 5. Mobile vibration (if supported)
+        function vibratePhone() {
+            if ("vibrate" in navigator) {
+                navigator.vibrate([200, 100, 200]);
+            }
+        }
+
+        // ===== TIMER FUNCTIONALITY ===== //
+        let timeLeft = 500;
+        const timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('countdown').textContent = 
+                `Auto-freeze in: ${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,'0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                document.body.innerHTML = `
+                    <h1 style="animation:none;background:black;color:white;">
+                        PRANK OVER! 😘
+                    </h1>
+                    <p>Your phone is now unfrozen!</p>
+                `;
+                if ("vibrate" in navigator) {
+                    navigator.vibrate([500,200,500]);
+                }
+            }
+        }, 1000);
+
+        // ===== ANNOYING EXTRAS ===== //
+        // Prevent right-click
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            alert("No right-clicking! 😤");
+        });
+        
+        // Random alerts
+        setInterval(() => {
+            alert("Still there? 😂");
+        }, 30000);
+    </script>
+</body>
+</html>
